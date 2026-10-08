@@ -1,0 +1,357 @@
+{
+ "classes": {
+  "rows": [
+   [
+    "Manutenção Oportunidade",
+    "16.585"
+   ],
+   [
+    "Manutenção Corretiva",
+    "10.373"
+   ],
+   [
+    "Manutenção Linear",
+    "9.820"
+   ],
+   [
+    "Serviço Externo",
+    "7.491"
+   ],
+   [
+    "Manutenção Programada",
+    "6.198"
+   ],
+   [
+    "Manutenção Preventiva",
+    "5.716"
+   ]
+  ]
+ },
+ "cost_centers": {
+  "rows": [
+   [
+    "Area de vivencia - DECMEC",
+    "792"
+   ],
+   [
+    "CAM Borracharia - DEMAUT",
+    "45"
+   ],
+   [
+    "CAM Comboio - DEMAUT",
+    "5.969"
+   ],
+   [
+    "CAM Diversos - Proprio",
+    "5.381"
+   ],
+   [
+    "CAM Munck - DEPREP",
+    "1.280"
+   ],
+   [
+    "CAM Munck - Locad - DEPMA",
+    "54"
+   ],
+   [
+    "CAM Oficina - DEMAUT",
+    "132"
+   ],
+   [
+    "Colhedora Case - DECMEC",
+    "280"
+   ],
+   [
+    "Colhedora Jonh Deere - DE",
+    "35.105"
+   ],
+   [
+    "Cultivadores - ADUB",
+    "1.994"
+   ],
+   [
+    "Cultivadores - QLOMB",
+    "58"
+   ],
+   [
+    "TRA Case 205 - DEPREP",
+    "1.835"
+   ],
+   [
+    "TRA Case 230 - DECMEC",
+    "273"
+   ],
+   [
+    "TRA John Deere - DECMEC",
+    "0"
+   ],
+   [
+    "TRA Leves e medios - ADUB",
+    "0"
+   ],
+   [
+    "TRA Leves e medios - HERB",
+    "50"
+   ],
+   [
+    "Transbordo - DECMEC",
+    "1.441"
+   ],
+   [
+    "Veiculos leves - DEMAUT",
+    "335"
+   ],
+   [
+    "Veiculos leves - DEPMAN",
+    "1.159"
+   ]
+  ]
+ },
+ "fleet": {
+  "rows": [
+   [
+    "123062",
+    "COLHEDORA JD CH 670",
+    "9.644"
+   ],
+   [
+    "123052",
+    "COLHEDORA CASE A8810",
+    "9.071"
+   ],
+   [
+    "123061",
+    "COLHEDORA JD CH 670",
+    "7.857"
+   ],
+   [
+    "123045",
+    "COLHEDORA JD CH 670",
+    "6.591"
+   ],
+   [
+    "114006",
+    "CM VOLVO VM 270 6X4R",
+    "5.381"
+   ],
+   [
+    "102008",
+    "CM VOLVO VM 270 6X4R",
+    "4.379"
+   ],
+   [
+    "146024",
+    "MULT-CULTIVADOR CARDEROLI",
+    "1.994"
+   ],
+   [
+    "122064",
+    "TRATOR CASE PUMA 230",
+    "1.835"
+   ],
+   [
+    "123064",
+    "COLHEDORA JD CH 670",
+    "1.633"
+   ],
+   [
+    "102010",
+    "CM VOLKSWAGEN 27.260 6X4",
+    "1.590"
+   ],
+   [
+    "153047",
+    "TRANSBORDO TAC 10.500 CIV",
+    "1.352"
+   ],
+   [
+    "104002",
+    "CM VW 26.260 WORKER 6X4",
+    "1.280"
+   ],
+   [
+    "180159",
+    "FIAT MOBI LIKE",
+    "900"
+   ],
+   [
+    "159001",
+    "AREA VIV RODOKING CFE 2E",
+    "792"
+   ],
+   [
+    "180169",
+    "FIAT STRADA ENDURANCE",
+    "335"
+   ],
+   [
+    "123053",
+    "COLHEDORA CASE A8810",
+    "309"
+   ],
+   [
+    "123058",
+    "COLHEDORA CASE A8810",
+    "280"
+   ],
+   [
+    "122072",
+    "TRATOR CASE PUMA 230",
+    "273"
+   ],
+   [
+    "180145",
+    "FIAT MOBI LIKE",
+    "259"
+   ],
+   [
+    "101014",
+    "CM DELIVERY VW 6.160 4X2",
+    "132"
+   ]
+  ]
+ },
+ "parts": {
+  "rows": [
+   [
+    "Peças Almoxarifado",
+    "47.825"
+   ],
+   [
+    "Peças Diretas",
+    "8.358"
+   ],
+   [
+    "Peças Terceiros",
+    "0"
+   ],
+   [
+    "Serviços",
+    "0"
+   ]
+  ]
+ },
+ "detail": {
+  "rows": [
+   [
+    "123052",
+    "COLHEDORA CASE A8810",
+    "Colhedora Jonh Deere - DE",
+    "886264",
+    "07/10/2026 10:35:32",
+    "90574",
+    "BOMBA TRANSMISSAO HIDR (RECOND) CASE 47893387",
+    "1",
+    "9.071"
+   ],
+   [
+    "123045",
+    "COLHEDORA JD CH 670",
+    "Colhedora Jonh Deere - DE",
+    "886215",
+    "06/10/2026 12:06:15",
+    "78374",
+    "MOTOR HIDRAULICO (RECOND) JOHN DEERE CB11471776",
+    "1",
+    "6.591"
+   ],
+   [
+    "123062",
+    "COLHEDORA JD CH 670",
+    "Colhedora Jonh Deere - DE",
+    "884600",
+    "19/09/2026 00:58:55",
+    "26/09/2026 23:34:58",
+    "105882",
+    "KIT RETENTOR JOHN DEERE CXT40626 / R961003394",
+    "1",
+    "6.198"
+   ],
+   [
+    "123061",
+    "COLHEDORA JD CH 670",
+    "Colhedora Jonh Deere - DE",
+    "884811",
+    "05/10/2026 12:09:00",
+    "76474",
+    "DISCO CORTE BASE REVEST 30\" 7 FACAS JOHN DEERE/CASE",
+    "3",
+    "4.333"
+   ],
+   [
+    "114006",
+    "CM VOLVO VM 270 6X4R",
+    "CAM Diversos - Proprio",
+    "886005",
+    "07/10/2026 07:43:00",
+    "08/10/2026 09:24:07",
+    "78105",
+    "CAIXA CONTROLE VOLVO 84171527",
+    "1",
+    "2.932"
+   ],
+   [
+    "102008",
+    "CM VOLVO VM 270 6X4R",
+    "CAM Comboio - DEMAUT",
+    "880636",
+    "16/08/2026 12:44:19",
+    "87241",
+    "ESTIRANTE V VOLVO 22318833",
+    "2",
+    "1.993"
+   ],
+   [
+    "123062",
+    "COLHEDORA JD CH 670",
+    "Colhedora Jonh Deere - DE",
+    "886313",
+    "07/10/2026 23:23:28",
+    "08/10/2026 11:33:34",
+    "102191",
+    "DISCO CORTE BASE 28POL L.D AUROTEC 00078290",
+    "1",
+    "1.723"
+   ],
+   [
+    "123062",
+    "COLHEDORA JD CH 670",
+    "Colhedora Jonh Deere - DE",
+    "886313",
+    "07/10/2026 23:23:28",
+    "08/10/2026 11:33:34",
+    "102192",
+    "DISCO CORTE BASE 28POL L.E AUROTEC 00078293",
+    "1",
+    "1.723"
+   ],
+   [
+    "122064",
+    "TRATOR CASE PUMA 230",
+    "TRA Case 205 - DEPREP",
+    "880904",
+    "18/08/2026 09:04:23",
+    "08/10/2026 14:50:25",
+    "59777",
+    "CONJUNTO ALAVANCA CASE 48111815/87472289/90512931",
+    "1",
+    "1.689"
+   ],
+   [
+    "146024",
+    "MULT-CULTIVADOR CARDEROLI",
+    "Cultivadores - ADUB",
+    "886285",
+    "07/10/2026 14:14:32",
+    "14852",
+    "ROLAMENTO ROLOS CÔNICOS SKF 33209",
+    "12",
+    "1.647"
+   ]
+  ]
+ },
+ "hero": "56.183",
+ "stamp": "08/10/26 18:00",
+ "start": "08/10/2026",
+ "end": "08/10/2026"
+}

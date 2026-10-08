@@ -1,0 +1,700 @@
+<style>
+  .viz-root{
+    color-scheme: light;
+    --page:        #f9f9f7;
+    --surface:     #fcfcfb;
+    --surface-2:   #f3f2ee;
+    --ink:         #0b0b0b;
+    --ink-2:       #52514e;
+    --muted:       #898781;
+    --grid:        #e1e0d9;
+    --baseline:    #c3c2b7;
+    --border:      rgba(11,11,11,0.10);
+    --accent:      #eb6834;
+    --accent-ink:  #ffffff;
+    --accent-wash: #fdece3;
+    --good:        #0ca30c;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .viz-root{
+      color-scheme: dark;
+      --page:        #0d0d0d;
+      --surface:     #1a1a19;
+      --surface-2:   #202020;
+      --ink:         #ffffff;
+      --ink-2:       #c3c2b7;
+      --muted:       #898781;
+      --grid:        #2c2c2a;
+      --baseline:    #383835;
+      --border:      rgba(255,255,255,0.10);
+      --accent:      #d95926;
+      --accent-ink:  #ffffff;
+      --accent-wash: #2c1a10;
+      --good:        #0ca30c;
+    }
+  }
+  :root[data-theme="dark"] .viz-root{
+    color-scheme: dark;
+    --page:        #0d0d0d;
+    --surface:     #1a1a19;
+    --surface-2:   #202020;
+    --ink:         #ffffff;
+    --ink-2:       #c3c2b7;
+    --muted:       #898781;
+    --grid:        #2c2c2a;
+    --baseline:    #383835;
+    --border:      rgba(255,255,255,0.10);
+    --accent:      #d95926;
+    --accent-ink:  #ffffff;
+    --accent-wash: #2c1a10;
+    --good:        #0ca30c;
+  }
+
+  .viz-root{
+    background: var(--page);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    min-height: 100%;
+    padding: 28px 20px 48px;
+    box-sizing: border-box;
+  }
+  .viz-root *{ box-sizing: border-box; }
+  .wrap{ max-width: 1180px; margin: 0 auto; }
+
+  .mono{ font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  .display{ font-family: "Archivo", system-ui, sans-serif; }
+
+  /* ---------- header ---------- */
+  header.top{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+    flex-wrap:wrap; margin-bottom:24px;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-mark{
+    width:44px; height:44px; border-radius:10px; background:#ffffff;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--border); padding:4px; flex-shrink:0;
+  }
+  .brand-mark img{ width:100%; height:100%; object-fit:contain; display:block; }
+  .brand-text .eyebrow{
+    font-size:11px; text-transform:uppercase; letter-spacing:.09em; color:var(--muted); font-weight:600;
+  }
+  .brand-text h1{
+    font-family:"Archivo", sans-serif; font-weight:700; font-size:20px; margin:2px 0 0; letter-spacing:-.01em;
+    text-wrap:balance;
+  }
+  .status-pills{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+  .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12px; color:var(--ink-2); background:var(--surface);
+    border:1px solid var(--border); border-radius:999px; padding:5px 11px 5px 9px;
+    white-space:nowrap;
+  }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--good); flex-shrink:0; }
+  .pill.warn .dot{ background:var(--accent); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    background: var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding: 26px 28px;
+    display:grid;
+    grid-template-columns: 1fr auto;
+    gap: 28px;
+    align-items:center;
+    margin-bottom: 22px;
+  }
+  .hero-figure .label{ font-size:13px; color:var(--ink-2); margin:0 0 6px; }
+  .hero-figure .value{
+    font-family:"Archivo",sans-serif; font-weight:800; font-size:clamp(40px,6vw,64px);
+    line-height:1; letter-spacing:-.02em; margin:0;
+  }
+  .hero-figure .sub{ font-size:13px; color:var(--muted); margin-top:10px; }
+  .hero-figure .sub b{ color:var(--ink-2); font-weight:600; }
+  .hero-figure .sub.delta{ font-weight:600; display:flex; align-items:center; gap:6px; }
+  .hero-figure .sub.delta .mono{ font-weight:400; color:var(--muted); }
+  .hero-figure .sub.delta.down{ color:var(--good); }
+  .hero-figure .sub.delta.up{ color:#d03b3b; }
+  .darrow{ font-size:11px; }
+
+  .gauge-wrap{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .gauge-wrap .gcap{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+  .gauge-wrap .gcap b{ color:var(--ink-2); }
+
+  /* ---------- section shell ---------- */
+  .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:18px; margin-bottom:18px; }
+  @media (max-width: 860px){ .grid-2{ grid-template-columns: 1fr; } }
+
+  section.card{
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:20px 22px 22px;
+  }
+  section.card h2{
+    font-family:"Archivo",sans-serif; font-size:14px; font-weight:700; margin:0 0 3px;
+    letter-spacing:-.005em;
+  }
+  section.card .hint{ font-size:12px; color:var(--muted); margin:0 0 16px; }
+
+  /* ---------- bar rows ---------- */
+  .barlist{ display:flex; flex-direction:column; gap:12px; }
+  .barrow{ display:grid; grid-template-columns: 188px 1fr 56px; align-items:center; gap:8px; }
+  .barrow .bname{ font-size:12px; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .barrow .btrack{ height:10px; border-radius:5px; background:var(--surface-2); overflow:hidden; }
+  .barrow .bfill{ height:100%; border-radius:5px; background:var(--accent); }
+  .barrow .bval{ font-size:12.5px; text-align:right; color:var(--ink); font-weight:600; }
+  .barlist .other{ font-size:11.5px; color:var(--muted); padding-top:2px; border-top:1px dashed var(--grid); margin-top:2px; }
+  .barrow.demais .bname{ font-style:italic; color:var(--muted); }
+  .barrow.demais .bfill{ opacity:.55; }
+
+  /* ---------- tables ---------- */
+  .tablewrap{ overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; font-size:12.5px; }
+  th{
+    text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--muted); font-weight:600; padding:0 10px 8px; border-bottom:1px solid var(--grid);
+    white-space:nowrap;
+  }
+  td{ padding:9px 10px; border-bottom:1px solid var(--grid); color:var(--ink-2); vertical-align:top; }
+  tr:last-child td{ border-bottom:none; }
+  td.num{ text-align:right; color:var(--ink); font-weight:600; white-space:nowrap; }
+  td.code{ color:var(--muted); white-space:nowrap; }
+  td.desc{ color:var(--ink); max-width:280px; }
+  td.desc .eq{ display:block; color:var(--muted); font-size:11px; margin-top:2px; }
+  tr.agg td{ color:var(--muted); font-style:italic; }
+  tr.agg td.num{ color:var(--ink-2); font-weight:600; font-style:normal; }
+
+  /* ---------- month trend charts ---------- */
+  .chart-wrap{ position:relative; overflow-x:auto; }
+  .chart-svg{ display:block; width:100%; min-width:1100px; height:auto; }
+  .chart-axis{ font-size:10px; fill:var(--muted); font-family:"IBM Plex Sans", sans-serif; }
+  .chart-grid{ stroke:var(--baseline); stroke-width:1; }
+  .chart-bar{ fill:var(--accent); transition:opacity .08s; }
+  .chart-bar.hover{ opacity:.78; }
+  .chart-line{ fill:none; stroke:var(--accent); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
+  .chart-area{ fill:var(--accent-wash); opacity:.6; }
+  .chart-hover-dot{ fill:var(--surface); stroke:var(--accent); stroke-width:2; }
+  .chart-crosshair{ stroke:var(--baseline); stroke-width:1; stroke-dasharray:3 3; }
+  .chart-tooltip{
+    position:absolute; pointer-events:none; z-index:5;
+    background:var(--ink); color:var(--page); font-size:11.5px; line-height:1.4;
+    padding:6px 10px; border-radius:8px; white-space:nowrap;
+    transform:translate(-50%,-100%); opacity:0; transition:opacity .1s;
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+  }
+  .chart-tooltip.show{ opacity:1; }
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top: 22px; padding-top:16px; border-top:1px solid var(--grid);
+    display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;
+    font-size:11.5px; color:var(--muted);
+  }
+  footer a{ color:var(--ink-2); }
+  footer .src{ max-width:520px; line-height:1.5; }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<div class="viz-root">
+  <div class="wrap">
+
+    <header class="top">
+      <div class="brand">
+        <div class="brand-mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHYAAAB1CAIAAAAUUYLoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ4IDc5LjE2NDAzNiwgMjAxOS8wOC8xMy0wMTowNjo1NyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIxLjAgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkI2RTM4NjJCQzJENzExRUI4MDM3RTM3Q0IyREM3RkMxIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkI2RTM4NjJDQzJENzExRUI4MDM3RTM3Q0IyREM3RkMxIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QjZFMzg2MjlDMkQ3MTFFQjgwMzdFMzdDQjJEQzdGQzEiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QjZFMzg2MkFDMkQ3MTFFQjgwMzdFMzdDQjJEQzdGQzEiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7jKQNUAAAKu0lEQVR42uydeVRT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" alt="UMOE Bioenergy" /></div>
+        <div class="brand-text">
+          <div class="eyebrow">UMOE Bioenergy · Power BI</div>
+          <h1>Materiais Aplicados — Por Equipamento</h1>
+        </div>
+      </div>
+      <div class="status-pills">
+        <span class="pill"><span class="dot"></span>Dados do Power&nbsp;BI atualizados em <b>08/10/2026 11:42</b></span>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="hero-figure">
+        <p class="label">Valor total de materiais aplicados — 08/10/2026</p>
+        <p class="value mono">R$ 42.445</p>
+      </div>
+      <div class="gauge-wrap">
+        <svg width="132" height="132" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="54" fill="none" stroke="var(--surface-2)" stroke-width="12"/>
+          <circle cx="65" cy="65" r="54" fill="none" stroke="var(--accent)" stroke-width="12"
+                  stroke-linecap="round" stroke-dasharray="248 92"
+                  transform="rotate(-90 65 65)"/>
+          <text x="65" y="61" text-anchor="middle" class="display mono" fill="var(--ink)" font-size="20" font-weight="800">42.445</text>
+          <text x="65" y="78" text-anchor="middle" fill="var(--muted)" font-size="11">73%</text>
+        </svg>
+        <span class="gcap">Indicador do relatório · escala 0–58.000</span>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <section class="card">
+        <h2>Por classe de manutenção</h2>
+        <p class="hint">Valor aplicado, por tipo de manutenção em 08/10/2026</p>
+        <div class="barlist">
+          <div class="barrow">
+            <span class="bname">Manutenção Oportunidade</span>
+            <div class="btrack"><div class="bfill" style="width:100%"></div></div>
+            <span class="bval mono">R$ 11.013</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Manutenção Linear</span>
+            <div class="btrack"><div class="bfill" style="width:87%"></div></div>
+            <span class="bval mono">R$ 9.579</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Manutenção Corretiva</span>
+            <div class="btrack"><div class="bfill" style="width:82%"></div></div>
+            <span class="bval mono">R$ 9.039</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Manutenção Programada</span>
+            <div class="btrack"><div class="bfill" style="width:56%"></div></div>
+            <span class="bval mono">R$ 6.198</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Manutenção Preventiva</span>
+            <div class="btrack"><div class="bfill" style="width:52%"></div></div>
+            <span class="bval mono">R$ 5.716</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Serviço Externo</span>
+            <div class="btrack"><div class="bfill" style="width:8%"></div></div>
+            <span class="bval mono">R$ 900</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Por centro de custo</h2>
+        <p class="hint">Valor aplicado, por centro de custo em 08/10/2026</p>
+        <div class="barlist">
+          <div class="barrow">
+            <span class="bname">Colhedora Jonh Deere - DE</span>
+            <div class="btrack"><div class="bfill" style="width:100%"></div></div>
+            <span class="bval mono">R$ 24.827</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">CAM Comboio - DEMAUT</span>
+            <div class="btrack"><div class="bfill" style="width:24%"></div></div>
+            <span class="bval mono">R$ 5.969</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">CAM Diversos - Proprio</span>
+            <div class="btrack"><div class="bfill" style="width:22%"></div></div>
+            <span class="bval mono">R$ 5.381</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">TRA Case 205 - DEPREP</span>
+            <div class="btrack"><div class="bfill" style="width:7%"></div></div>
+            <span class="bval mono">R$ 1.835</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Transbordo - DECMEC</span>
+            <div class="btrack"><div class="bfill" style="width:6%"></div></div>
+            <span class="bval mono">R$ 1.441</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Veiculos leves - DEPMAN</span>
+            <div class="btrack"><div class="bfill" style="width:5%"></div></div>
+            <span class="bval mono">R$ 1.159</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Area de vivencia - DECMEC</span>
+            <div class="btrack"><div class="bfill" style="width:3%"></div></div>
+            <span class="bval mono">R$ 792</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Veiculos leves - DEMAUT</span>
+            <div class="btrack"><div class="bfill" style="width:1%"></div></div>
+            <span class="bval mono">R$ 335</span>
+          </div>
+          <div class="barrow demais">
+            <span class="bname">Demais centros de custo</span>
+            <div class="btrack"><div class="bfill" style="width:3%"></div></div>
+            <span class="bval mono">R$ 706</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="grid-2">
+      <section class="card">
+        <h2>Top 10 equipamentos (frota)</h2>
+        <p class="hint">Valor aplicado, por equipamento em 08/10/2026</p>
+        <div class="barlist">
+          <div class="barrow">
+            <span class="bname">123052 · Colhedora Case A8810</span>
+            <div class="btrack"><div class="bfill" style="width:100%"></div></div>
+            <span class="bval mono">R$ 9.071</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">123061 · Colhedora JD CH 670</span>
+            <div class="btrack"><div class="bfill" style="width:84%"></div></div>
+            <span class="bval mono">R$ 7.616</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">123062 · Colhedora JD CH 670</span>
+            <div class="btrack"><div class="bfill" style="width:68%"></div></div>
+            <span class="bval mono">R$ 6.198</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">114006 · CM Volvo VM 270 6X4R</span>
+            <div class="btrack"><div class="bfill" style="width:59%"></div></div>
+            <span class="bval mono">R$ 5.381</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">102008 · CM Volvo VM 270 6X4R</span>
+            <div class="btrack"><div class="bfill" style="width:48%"></div></div>
+            <span class="bval mono">R$ 4.379</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">122064 · Trator Case Puma 230</span>
+            <div class="btrack"><div class="bfill" style="width:20%"></div></div>
+            <span class="bval mono">R$ 1.835</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">123064 · Colhedora JD CH 670</span>
+            <div class="btrack"><div class="bfill" style="width:18%"></div></div>
+            <span class="bval mono">R$ 1.633</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">102010 · CM Volkswagen 27.260 6X4</span>
+            <div class="btrack"><div class="bfill" style="width:18%"></div></div>
+            <span class="bval mono">R$ 1.590</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">153047 · Transbordo TAC 10.500 CIV</span>
+            <div class="btrack"><div class="bfill" style="width:15%"></div></div>
+            <span class="bval mono">R$ 1.352</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">180159 · Fiat Mobi Like</span>
+            <div class="btrack"><div class="bfill" style="width:10%"></div></div>
+            <span class="bval mono">R$ 900</span>
+          </div>
+          <div class="barrow demais">
+            <span class="bname">Demais equipamentos</span>
+            <div class="btrack"><div class="bfill" style="width:27%"></div></div>
+            <span class="bval mono">R$ 2.490</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Materiais de maior valor</h2>
+        <p class="hint">Top 10 itens do detalhamento do dia</p>
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr><th>Cód.</th><th>Descrição</th><th>Qtd.</th><th>Valor</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="code">90574</td>
+                <td class="desc">Bomba Transmissao Hidr (Recond) Case 47893387<span class="eq">123052 · Colhedora Case A8810</span></td>
+                <td class="num">1</td>
+                <td class="num mono">R$ 9.071</td>
+              </tr>
+              <tr>
+                <td class="code">105882</td>
+                <td class="desc">Kit Retentor John Deere CXT40626 / R961003394<span class="eq">123062 · Colhedora JD CH 670</span></td>
+                <td class="num">1</td>
+                <td class="num mono">R$ 6.198</td>
+              </tr>
+              <tr>
+                <td class="code">76474</td>
+                <td class="desc">Disco Corte Base Revest 30&quot; 7 Facas John Deere/Case<span class="eq">123061 · Colhedora JD CH 670</span></td>
+                <td class="num">3</td>
+                <td class="num mono">R$ 4.333</td>
+              </tr>
+              <tr>
+                <td class="code">78105</td>
+                <td class="desc">Caixa Controle Volvo 84171527<span class="eq">114006 · CM Volvo VM 270 6X4R</span></td>
+                <td class="num">1</td>
+                <td class="num mono">R$ 2.932</td>
+              </tr>
+              <tr>
+                <td class="code">87241</td>
+                <td class="desc">Estirante V Volvo 22318833<span class="eq">102008 · CM Volvo VM 270 6X4R</span></td>
+                <td class="num">2</td>
+                <td class="num mono">R$ 1.993</td>
+              </tr>
+              <tr>
+                <td class="code">59777</td>
+                <td class="desc">Conjunto Alavanca Case 48111815/87472289/90512931<span class="eq">122064 · Trator Case Puma 230</span></td>
+                <td class="num">1</td>
+                <td class="num mono">R$ 1.689</td>
+              </tr>
+              <tr>
+                <td class="code">16151</td>
+                <td class="desc">Bateria Automotiva 12 Volts/100 Amperes<span class="eq">123064 · Colhedora JD CH 670</span></td>
+                <td class="num">2</td>
+                <td class="num mono">R$ 1.633</td>
+              </tr>
+              <tr>
+                <td class="code">105866</td>
+                <td class="desc">Motor Partida 24V VW / Prestolite 23H911023 / 05240<span class="eq">102010 · CM Volkswagen 27.260 6X4</span></td>
+                <td class="num">1</td>
+                <td class="num mono">R$ 1.590</td>
+              </tr>
+              <tr>
+                <td class="code">44607</td>
+                <td class="desc">Batente Molejo Volvo 20390836<span class="eq">102008 · CM Volvo VM 270 6X4R</span></td>
+                <td class="num">4</td>
+                <td class="num mono">R$ 1.519</td>
+              </tr>
+              <tr>
+                <td class="code">84855</td>
+                <td class="desc">Compressor Ar Volvo 21184142/Sanden 8044<span class="eq">114006 · CM Volvo VM 270 6X4R</span></td>
+                <td class="num">1</td>
+                <td class="num mono">R$ 1.204</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-bottom:18px;">
+      <h2>Por tipo de peças/serviços</h2>
+      <p class="hint">Valor aplicado, por tipo de peças/serviços em 08/10/2026</p>
+      <div class="barlist">
+          <div class="barrow">
+            <span class="bname">Peças Almoxarifado</span>
+            <div class="btrack"><div class="bfill" style="width:100%"></div></div>
+            <span class="bval mono">R$ 34.087</span>
+          </div>
+          <div class="barrow">
+            <span class="bname">Peças Diretas</span>
+            <div class="btrack"><div class="bfill" style="width:25%"></div></div>
+            <span class="bval mono">R$ 8.358</span>
+          </div>
+        <div class="other">Total do dia: R$ 42.445</div>
+        </div>
+      </section>
+
+    <section class="card" style="margin-bottom:18px;">
+      <h2>Valor diário do mês — <span class="month-name-label">outubro/2026</span></h2>
+      <p class="hint">Total de materiais aplicados por dia, <span class="month-range-label">01/10 a 08/10</span> · este gráfico é recalculado automaticamente a cada atualização, incluindo a virada de mês</p>
+      <div class="chart-wrap" id="daily-chart"></div>
+    </section>
+
+    <section class="card" style="margin-bottom:18px;">
+      <h2>Acumulado do mês — <span class="month-name-label">outubro/2026</span></h2>
+      <p class="hint">Total acumulado de materiais aplicados no mês, <span class="month-range-label">01/10 a 08/10</span> · acumulado até agora: <b id="month-total-value" class="mono">R$ 0</b></p>
+      <div class="chart-wrap" id="cum-chart"></div>
+    </section>
+
+    <footer>
+      <div class="src">Fonte: relatório privado do Power&nbsp;BI (link compartilhado, requer login) — não é possível incorporar o relatório ao vivo aqui, então este painel é um retrato dos dados extraídos manualmente a partir do relatório, com o filtro "Data Aplicação." definido explicitamente para 08/10/2026. Os gráficos de tendência mensal (diário e acumulado) são construídos a partir do histórico diário embutido nesta própria página, atualizado a cada ciclo da automação — o mês de setembro/2026 fechou com R$ 2.232.722 acumulados; outubro/2026 recomeçou do zero na virada do mês.</div>
+      <div>Gerado por Claude · 08/10/2026 11:42 (America/Sao_Paulo)</div>
+    </footer>
+
+  </div>
+</div>
+
+<script id="month-data" type="application/json">
+{
+  "month": "2026-10",
+  "updatedAt": "08/10/2026 11:42",
+  "daily": {
+    "2026-10-01": 56428,
+    "2026-10-02": 266031,
+    "2026-10-03": 15519,
+    "2026-10-04": 0,
+    "2026-10-05": 99825,
+    "2026-10-06": 38121,
+    "2026-10-07": 126391,
+    "2026-10-08": 42445
+  }
+}
+</script>
+
+<script>
+(function(){
+  var DATA_EL = document.getElementById('month-data');
+  if(!DATA_EL) return;
+  var monthData;
+  try { monthData = JSON.parse(DATA_EL.textContent); } catch(e){ return; }
+
+  function fmtBRL(n){
+    n = Math.round(n);
+    var s = String(Math.abs(n));
+    var parts = [];
+    while(s.length>3){ parts.unshift(s.slice(-3)); s = s.slice(0,-3); }
+    parts.unshift(s);
+    return (n<0?'-':'') + 'R$ ' + parts.join('.');
+  }
+
+  var MONTH_NAMES_PT = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+  var days = Object.keys(monthData.daily).sort();
+  var values = days.map(function(d){ return monthData.daily[d]; });
+  var n = days.length;
+  if(n===0) return;
+
+  var cumulative = [];
+  var running = 0;
+  for(var i=0;i<n;i++){ running += values[i]; cumulative.push(running); }
+
+  var dayLabels = days.map(function(d){ return d.slice(8,10); });
+
+  function dateLabel(iso){
+    var p = iso.split('-');
+    return p[2] + '/' + p[1];
+  }
+
+  // month name + range labels
+  var mParts = (monthData.month || days[0].slice(0,7)).split('-');
+  var monthLabel = MONTH_NAMES_PT[parseInt(mParts[1],10)-1] + '/' + mParts[0];
+  var rangeLabel = dateLabel(days[0]) + ' a ' + dateLabel(days[n-1]);
+  Array.prototype.forEach.call(document.querySelectorAll('.month-name-label'), function(elx){ elx.textContent = monthLabel; });
+  Array.prototype.forEach.call(document.querySelectorAll('.month-range-label'), function(elx){ elx.textContent = rangeLabel; });
+  var totalEl = document.getElementById('month-total-value');
+  if(totalEl){ totalEl.textContent = fmtBRL(cumulative[n-1]); }
+
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs){
+    var e = document.createElementNS(NS, tag);
+    for(var k in attrs){ e.setAttribute(k, attrs[k]); }
+    return e;
+  }
+
+  // ---------- Daily bar chart ----------
+  (function renderBarChart(){
+    var host = document.getElementById('daily-chart');
+    if(!host) return;
+    var W = 1100, H = 260;
+    var mL = 14, mR = 14, mT = 18, mB = 30;
+    var plotW = W - mL - mR, plotH = H - mT - mB;
+    var maxV = Math.max.apply(null, values) * 1.08;
+    var slot = plotW / n;
+    var barW = Math.max(2, slot * 0.58);
+    var rMax = Math.min(4, barW/2);
+
+    var svg = el('svg', {viewBox: '0 0 ' + W + ' ' + H, 'class':'chart-svg', preserveAspectRatio:'none'});
+    svg.appendChild(el('line', {x1:mL, y1:mT+plotH, x2:mL+plotW, y2:mT+plotH, 'class':'chart-grid'}));
+
+    var barsG = el('g', {});
+    var hoverBars = [];
+    for(var i=0;i<n;i++){
+      var x = mL + i*slot + (slot-barW)/2;
+      var h = Math.max(1.5, (values[i]/maxV) * plotH);
+      var yTop = mT + plotH - h;
+      var yBot = mT + plotH;
+      var rr = Math.min(rMax, h);
+      var d = 'M'+x+','+yBot+' L'+x+','+(yTop+rr)+' Q'+x+','+yTop+' '+(x+rr)+','+yTop+
+               ' L'+(x+barW-rr)+','+yTop+' Q'+(x+barW)+','+yTop+' '+(x+barW)+','+(yTop+rr)+
+               ' L'+(x+barW)+','+yBot+' Z';
+      var bar = el('path', {d:d, 'class':'chart-bar'});
+      barsG.appendChild(bar);
+      hoverBars.push({cx:x+barW/2, top:yTop});
+
+      var lbl = el('text', {x:x+barW/2, y:H-10, 'text-anchor':'middle', 'class':'chart-axis'});
+      lbl.textContent = dayLabels[i];
+      svg.appendChild(lbl);
+    }
+    svg.appendChild(barsG);
+    host.innerHTML = '';
+    host.appendChild(svg);
+
+    var tip = document.createElement('div');
+    tip.className = 'chart-tooltip';
+    host.appendChild(tip);
+
+    var lastIdx = -1;
+    svg.addEventListener('mousemove', function(ev){
+      var rect = svg.getBoundingClientRect();
+      var scaleX = W / rect.width, scaleY = H / rect.height;
+      var mx = (ev.clientX - rect.left) * scaleX;
+      var idx = Math.floor((mx - mL) / slot);
+      idx = Math.max(0, Math.min(n-1, idx));
+      if(idx !== lastIdx){
+        Array.prototype.forEach.call(barsG.children, function(b, i){
+          b.classList.toggle('hover', i===idx);
+        });
+        lastIdx = idx;
+      }
+      var hb = hoverBars[idx];
+      tip.style.left = (hb.cx / scaleX) + 'px';
+      tip.style.top = (hb.top * scaleY - 8) + 'px';
+      tip.textContent = dateLabel(days[idx]) + ' — ' + fmtBRL(values[idx]);
+      tip.classList.add('show');
+    });
+    svg.addEventListener('mouseleave', function(){
+      tip.classList.remove('show');
+      Array.prototype.forEach.call(barsG.children, function(b){ b.classList.remove('hover'); });
+      lastIdx = -1;
+    });
+  })();
+
+  // ---------- Cumulative chart ----------
+  (function renderCumChart(){
+    var host = document.getElementById('cum-chart');
+    if(!host) return;
+    var W = 1100, H = 260;
+    var mL = 14, mR = 14, mT = 18, mB = 30;
+    var plotW = W - mL - mR, plotH = H - mT - mB;
+    var maxV = cumulative[n-1] * 1.08 || 1;
+    var slot = n>1 ? plotW/(n-1) : plotW;
+
+    function px(i){ return n>1 ? mL + i*slot : mL + plotW/2; }
+    function py(v){ return mT + plotH - (v/maxV)*plotH; }
+
+    var svg = el('svg', {viewBox:'0 0 '+W+' '+H, 'class':'chart-svg', preserveAspectRatio:'none'});
+    svg.appendChild(el('line', {x1:mL, y1:mT+plotH, x2:mL+plotW, y2:mT+plotH, 'class':'chart-grid'}));
+
+    var pts = cumulative.map(function(v,i){ return px(i)+','+py(v); });
+    var areaD = 'M'+px(0)+','+(mT+plotH)+' L'+pts.join(' L')+' L'+px(n-1)+','+(mT+plotH)+' Z';
+    svg.appendChild(el('path', {d:areaD, 'class':'chart-area'}));
+    var lineD = 'M'+pts.join(' L');
+    svg.appendChild(el('path', {d:lineD, 'class':'chart-line'}));
+
+    var lastX = px(n-1), lastY = py(cumulative[n-1]);
+    svg.appendChild(el('circle', {cx:lastX, cy:lastY, r:4.5, 'class':'chart-hover-dot'}));
+
+    for(var i=0;i<n;i++){
+      var lbl = el('text', {x:px(i), y:H-10, 'text-anchor':'middle', 'class':'chart-axis'});
+      lbl.textContent = dayLabels[i];
+      svg.appendChild(lbl);
+    }
+
+    var crosshair = el('line', {'class':'chart-crosshair', y1:mT, y2:mT+plotH, x1:0, x2:0, style:'opacity:0'});
+    svg.appendChild(crosshair);
+    var hoverDot = el('circle', {r:5, 'class':'chart-hover-dot', style:'opacity:0'});
+    svg.appendChild(hoverDot);
+
+    host.innerHTML = '';
+    host.appendChild(svg);
+    var tip = document.createElement('div');
+    tip.className = 'chart-tooltip';
+    host.appendChild(tip);
+
+    svg.addEventListener('mousemove', function(ev){
+      var rect = svg.getBoundingClientRect();
+      var scaleX = W / rect.width, scaleY = H/rect.height;
+      var mx = (ev.clientX - rect.left) * scaleX;
+      var idx = n>1 ? Math.round((mx-mL)/slot) : 0;
+      idx = Math.max(0, Math.min(n-1, idx));
+      var x = px(idx), y = py(cumulative[idx]);
+      crosshair.setAttribute('x1', x); crosshair.setAttribute('x2', x);
+      crosshair.style.opacity = 1;
+      hoverDot.setAttribute('cx', x); hoverDot.setAttribute('cy', y);
+      hoverDot.style.opacity = 1;
+      tip.style.left = (x/scaleX) + 'px';
+      tip.style.top = (y*scaleY - 10) + 'px';
+      tip.textContent = dateLabel(days[idx]) + ' — ' + fmtBRL(cumulative[idx]);
+      tip.classList.add('show');
+    });
+    svg.addEventListener('mouseleave', function(){
+      crosshair.style.opacity = 0;
+      hoverDot.style.opacity = 0;
+      tip.classList.remove('show');
+    });
+  })();
+})();
+</script>

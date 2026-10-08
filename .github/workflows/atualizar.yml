@@ -1,0 +1,65 @@
+name: Atualizar painel UMOE
+
+on:
+  schedule:
+    - cron: "10 * * * *"      # de hora em hora, 24h (horario UTC; o painel mostra horario de Brasilia)
+  workflow_dispatch:
+    inputs:
+      completo:
+        description: "Reler todos os dias do mes (mais lento, ~4 min)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: painel-umoe
+  cancel-in-progress: false
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Testes (se falharem, nada e publicado)
+        run: python -m pytest -q
+      - name: Ler o Power BI e gerar o painel
+        env:
+          PBI_PUBLIC_URL: ${{ secrets.PBI_PUBLIC_URL }}
+          PBI_TENANT_ID: ${{ secrets.PBI_TENANT_ID }}
+          PBI_CLIENT_ID: ${{ secrets.PBI_CLIENT_ID }}
+          PBI_CLIENT_SECRET: ${{ secrets.PBI_CLIENT_SECRET }}
+        run: |
+          # 02h de Brasilia (05 UTC) ou execucao manual "completo": relê o mes inteiro (captura revisoes antigas)
+          if [ "$(date -u +%H)" = "05" ] || [ "${{ inputs.completo }}" = "true" ]; then export FULL_REFRESH=1; fi
+          python -m generator.run --out site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Publicar
+        id: deploy
+        uses: actions/deploy-pages@v4
+      - name: Guardar historico do mes (e registrar atividade para o GitHub nao desligar o agendamento)
+        run: |
+          git config user.name "painel-umoe-bot"
+          git config user.email "painel-umoe-bot@users.noreply.github.com"
+          if [ "$(date -u +%H)" = "06" ]; then date -u +"%Y-%m-%dT%H:%MZ" > data/ultima_execucao.txt; fi
+          git add data/
+          if ! git diff --cached --quiet; then
+            git commit -m "historico diario"
+            git pull --rebase origin "${GITHUB_REF_NAME}" && git push
+          fi

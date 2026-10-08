@@ -1,0 +1,34 @@
+{
+  "_ajuda": "source='web' usa o link publico do relatorio (so precisa do segredo PBI_PUBLIC_URL). source='api' usa a API oficial (precisa Azure; veja README_API.md).",
+  "source": "web",
+  "workspace_id": "COLE-AQUI-O-ID-DO-WORKSPACE",
+  "dataset_id": "COLE-AQUI-O-ID-DO-DATASET",
+  "table": "Materiais",
+  "columns": {
+    "date": "Data Aplicação.",
+    "class": "Classe Manutenção",
+    "cost_center": "Centro Custo",
+    "fleet": "Frota",
+    "model": "Modelo",
+    "parts_type": "Tipo Peças/Serviços",
+    "os": "O.S",
+    "material_code": "Cód.",
+    "material_desc": "Descrição Material",
+    "qty": "Qtd.",
+    "value": "Valor Total"
+  },
+  "value_expr": "",
+  "timezone": "America/Sao_Paulo",
+  "gauge_max": 58000,
+  "keep_upper": [
+    "JD",
+    "CM",
+    "VW",
+    "TAC",
+    "CIV",
+    "DMB",
+    "CH",
+    "VM",
+    "CFE"
+  ]
+}
